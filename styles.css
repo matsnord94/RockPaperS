@@ -1,6 +1,6 @@
 body{
     background-image:url('images/backgroundPicture.png');
-    background-size:auto;
+    background-size:cover;
     background-repeat: no-repeat;
     display:flex;
     flex-direction: column;
