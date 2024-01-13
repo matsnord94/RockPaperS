@@ -1,12 +1,43 @@
+
+document.addEventListener('DOMContentLoaded', function() {
+
+
 // var for chosing best of 3 or 5
 let gameMode3 = false; 
 let gameMode5 = false;
+gameMode3 = true;
+gameMode5 = false;
+
 
 //Var choices
 let playerChoice = 0;
 let computerChoice = 0;
 let playerScore = 0;
 let computerScore = 0;
+
+// var winning
+
+let playerWin = false;
+let computerWin = false;
+//buttons
+let buttonMode3 = document.getElementById('bestOf3');
+let buttonMode5 = document.getElementById('bestOf5');
+let buttonStart = document.getElementById('gameStart')
+let buttonPlayerChoseRock = document.getElementById('rock');
+let buttonPlayerChosePaper = document.getElementById('paper')
+let buttonPlayerChoseScissor = document.getElementById('scissor')
+
+// set variables for text changing
+
+let playerChoiceDiv = document.getElementById('showUserChoice');
+let computerChoiceDiv = document.getElementById('showComputerChoice');
+let playerScoreP = document.getElementById('playerScoreText');
+let computerScoreP = document.getElementById('computerScoreText');
+
+buttonStart.addEventListener('click',function(){
+    console.log('game starting');
+    fullGame();
+})
 
 
 // function for toggling style
@@ -28,6 +59,62 @@ function translateNumber(numberToBeTranslated){
     case 2:
         return 'Scissors';
 }
+}
+
+// funktion för playerChoice
+function checkForPlayerChoice(){
+    return new Promise(function(resolve){
+
+    
+    buttonPlayerChoseRock.addEventListener('click', function(){
+        playerChoice = 0;
+        playerChoiceDiv.textContent = translateNumber(playerChoice)
+        console.log(playerChoiceDiv)
+        // setTimeout(playOneRound, 1000)
+        resolve();
+        
+    })
+    
+    buttonPlayerChosePaper.addEventListener('click', function(){
+        playerChoice = 1;
+        console.log('papper knapp tryckt')
+        playerChoiceDiv.textContent = translateNumber(playerChoice)
+        resolve();
+    })
+    
+    buttonPlayerChoseScissor.addEventListener('click', function(){
+        playerChoice = 2;
+        playerChoiceDiv.textContent = translateNumber(playerChoice)
+        resolve();
+    })
+});
+
+}
+
+
+async function fullGame() {
+    let gameModeInt = 3;
+    if(gameMode5){
+        gameModeInt = 5;
+    }
+while(playerScore <= gameModeInt && computerScore <= gameModeInt){
+    showScore();
+    console.log('väntar på spelarval');
+    await checkForPlayerChoice();
+    console.log('spelare valt');
+    playOneRound();
+    
+    console.log('player score is',playerScore)
+    console.log('computer score is', computerScore)
+    console.log('game mode is:', gameModeInt)
+}
+if(playerscore > computerScore){
+    playerWin = true;
+}
+else {
+    computerWin = true;
+}
+
 }
 
 //function for one round
@@ -52,9 +139,11 @@ function playOneRound(){
         }
  }
 
- showScore();
+ 
 
 }
+
+
 
 // function for computerChoice
 function computerChoiceFunction(){
@@ -66,17 +155,14 @@ function computerChoiceFunction(){
 
 function showScore(){
     playerScoreP.textContent = playerScore.toString();
-    
+    computerScoreP.textContent = computerScore.toString();
 }
 
 
-//buttons
-let buttonMode3 = document.getElementById('bestOf3');
-let buttonMode5 = document.getElementById('bestOf5');
-let buttonStart = document.getElementById('gameStart')
-let buttonPlayerChoseRock = document.getElementById('rock');
-let buttonPlayerChosePaper = document.getElementById('paper')
-let buttonPlayerChoseScissor = document.getElementById('scissor')
+
+
+toggleButton(buttonMode3, true);
+toggleButton(buttonMode5, false);
 
 buttonMode3.addEventListener('click', function(){
     gameMode3 = true;
@@ -94,30 +180,6 @@ buttonMode5.addEventListener('click',function(){
 
 })
 
-// set variables for text changing
+}
 
-let playerChoiceDiv = document.getElementById('showUserChoice');
-let computerChoiceDiv = document.getElementById('showComputerChoice');
-let playerScoreP = document.getElementById('playerScoreText');
-let computerScoreP = document.getElementById('playerScoreText');
-
-buttonPlayerChoseRock.addEventListener('click', function(){
-    playerChoice = 0;
-    playerChoiceDiv.textContent = translateNumber(playerChoice)
-    console.log(playerChoiceDiv)
-    // setTimeout(playOneRound, 1000)
-    playOneRound();
-})
-
-buttonPlayerChosePaper.addEventListener('click', function(){
-    playerChoice = 1;
-    console.log('papper knapp tryckt')
-    playerChoiceDiv.textContent = translateNumber(playerChoice)
-    playOneRound();
-})
-
-buttonPlayerChoseScissor.addEventListener('click', function(){
-    playerChoice = 2;
-    playerChoiceDiv.textContent = translateNumber(playerChoice)
-    playOneRound();
-})
+)
